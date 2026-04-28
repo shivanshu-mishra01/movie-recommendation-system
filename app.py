@@ -3,14 +3,14 @@ import pickle
 import pandas as pd
 import requests
 
-# ---------------- PAGE CONFIG ----------------
+
 st.set_page_config(
     page_title="Movie Recommender System",
     page_icon="🎬",
     layout="wide"
 )
 
-# ---------------- CSS ----------------
+
 st.markdown("""
 <style>
 
@@ -84,16 +84,16 @@ html, body, [class*="css"] {
 </style>
 """, unsafe_allow_html=True)
 
-# ---------------- LOAD DATA ----------------
+
 movies_dict = pickle.load(open("movie_dict.pkl", "rb"))
 movies = pd.DataFrame(movies_dict)
 
 similarity = pickle.load(open("similarity.pkl", "rb"))
 
-# ---------------- OMDB API ----------------
+# OMDB API
 API_KEY = "74bb5333"
 
-# ---------------- FETCH POSTER ----------------
+
 def fetch_poster(movie_name):
     try:
         url = f"http://www.omdbapi.com/?apikey={API_KEY}&t={movie_name}"
@@ -110,7 +110,7 @@ def fetch_poster(movie_name):
         text = movie_name.replace(" ", "+")
         return f"https://dummyimage.com/300x450/000/fff&text={text}"
 
-# ---------------- RECOMMEND FUNCTION ----------------
+
 def recommend(movie):
     movie_index = movies[movies["title"] == movie].index[0]
     distances = similarity[movie_index]
@@ -131,7 +131,7 @@ def recommend(movie):
 
     return recommended_movies, recommended_posters
 
-# ---------------- UI ----------------
+#UI
 st.markdown("<div class='title'>🎬 Movie Recommender System</div>", unsafe_allow_html=True)
 
 movie_list = sorted(movies["title"].values)
